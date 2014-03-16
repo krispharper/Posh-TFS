@@ -5,9 +5,9 @@ using System.Linq;
 using Microsoft.TeamFoundation.Client;
 using Microsoft.TeamFoundation.VersionControl.Client;
 
-namespace Posh_TFS.Utils
+namespace PoshTfs.Utils
 {
-    static class TfsUtils
+    public static class TfsUtils
     {
         private static List<ChangeType> AddTypes
         {
@@ -51,7 +51,7 @@ namespace Posh_TFS.Utils
             }
         }
 
-        public static string GetCurentBranchName(string path)
+        public static string GetCurrentBranchName(string path)
         {
             if (!IsUnderVersionControl(path))
                return "";
@@ -65,7 +65,7 @@ namespace Posh_TFS.Utils
             if (item.IsBranch)
                 return Path.GetFileName(path);
             else
-                return GetCurentBranchName(Directory.GetParent(path).FullName);
+                return GetCurrentBranchName(Directory.GetParent(path).FullName);
         }
 
         public static TfsChangeResults GetPendingChanges(string path)

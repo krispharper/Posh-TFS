@@ -1,4 +1,4 @@
-﻿namespace Posh_TFS.Utils
+﻿namespace PoshTfs.Utils
 {
     public class TfsChangeResults
     {
