@@ -79,6 +79,7 @@ function Write-PowerlinePrompt() {
         }
     }
 
+    Write-Host " " -n -b $powerlineSettings.BackgroundColor -f $powerlineSettings.BackgroundColor
     Write-Host "$([char]0xE0B0)" -n -b $powerlineSettings.DefaultBackgroundColor -f $powerlineSettings.BackgroundColor
 }
 
