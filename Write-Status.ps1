@@ -21,19 +21,23 @@ $powerlineSettings = New-Object PSObject -Property @{
     DeleteForegroundColor = [ConsoleColor]::Red
 }
 
-$branch = [PoshTfs.Utils.TfsUtils]::GetCurrentBranchName((Get-Item -Path .).FullName)
-$changes = [PoshTfs.Utils.TfsUtils]::GetPendingChanges((Get-Item -Path .).FullName)
-$changesExist = ($changes.Adds + $changes.Edits + $changes.Deletes) -gt 0
+try {
+    $branch = [PoshTfs.Utils.TfsUtils]::GetCurrentBranchName((Get-Item -Force -Path .).FullName)
+    $changes = [PoshTfs.Utils.TfsUtils]::GetPendingChanges((Get-Item -Force -Path .).FullName)
+    $changesExist = ($changes.Adds + $changes.Edits + $changes.Deletes) -gt 0
+}
+catch {
+}
 
 function Write-Prompt() {
     Write-Host " [" -n -b $promptSettings.DefaultBackgroundColor -f $promptSettings.BracketForegroundColor
 
-    if ($branch -ne "") {
+    if ($branch) {
         Write-Host " $branch" -n -b $promptSettings.DefaultBackgroundColor -f $promptSettings.DefaultForegroundColor
     }
 
     if ($changesExist) {
-        if ($branch -ne "" -and $changesExist) {
+        if ($branch -and $changesExist) {
             Write-Host " |" -n -b $promptSettings.DefaultBackgroundColor -f $promptSettings.BracketForegroundColor
         }
 
@@ -56,13 +60,13 @@ function Write-Prompt() {
 function Write-PowerlinePrompt() {
     Write-Host "`b$([char]0xE0B0)" -n -b $powerlineSettings.BackgroundColor -f $powerlineSettings.PreviousBackgroundColor
 
-    if ($branch -ne "") {
+    if ($branch) {
         Write-Host " $([char]0xE0A0)" -n -b $powerlineSettings.BackgroundColor -f $powerlineSettings.BranchForegroundColor
         Write-Host " $branch" -n -b $powerlineSettings.BackgroundColor -f $powerlineSettings.BranchForegroundColor
     }
 
     if ($changesExist) {
-        if ($branch -ne "") {
+        if ($branch) {
             Write-Host " $([char]0xE0B1)" -n -b $powerlineSettings.BackgroundColor -f $powerlineSettings.DelimForegroundColor
         }
 
@@ -83,11 +87,15 @@ function Write-PowerlinePrompt() {
     Write-Host "$([char]0xE0B0)" -n -b $powerlineSettings.DefaultBackgroundColor -f $powerlineSettings.BackgroundColor
 }
 
-if ($branch -ne "" -or $changesExist) {
-    if ($powerlinePrompt) {
-        Write-PowerlinePrompt
+try {
+    if ($branch -or $changesExist) {
+        if ($powerlinePrompt) {
+            Write-PowerlinePrompt
+        }
+        else {
+            Write-Prompt
+        }
     }
-    else {
-        Write-Prompt
-    }
+}
+catch {
 }

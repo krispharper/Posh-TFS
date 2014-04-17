@@ -54,7 +54,7 @@ namespace PoshTfs.Utils
         public static string GetCurrentBranchName(string path)
         {
             if (!IsUnderVersionControl(path))
-               return "";
+               return null;
 
             Item item = GetVersionControlServer().GetItem(
                                                       path: path,

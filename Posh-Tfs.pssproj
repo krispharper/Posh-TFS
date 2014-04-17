@@ -31,7 +31,7 @@
   </PropertyGroup>
   <ItemGroup />
   <ItemGroup>
-    <Content Include="Script.ps1" />
+    <Compile Include="Write-Status.ps1" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Target Name="Build" />
